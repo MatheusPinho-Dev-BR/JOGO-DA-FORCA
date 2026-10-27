@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101713">
+  <meta name="description" content="Um jogo da forca simples e divertido. Descobre a palavra antes de ficares sem tentativas!">
+  <title>Jogo da Forca</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/script.js" defer></script>
+</head>
+<body>
+  <main class="game-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Jogo da Forca — início">
+        <span class="brand-mark" aria-hidden="true">F</span>
+        <span>palavra<span class="brand-dot">.</span></span>
+      </a>
+      <span class="topbar-note">UM CLÁSSICO DE PALAVRAS</span>
+    </header>
+
+    <section class="game-card" aria-labelledby="game-title">
+      <div class="game-heading">
+        <div>
+          <p class="eyebrow">PENSA, DESCOBRE, ACERTA</p>
+          <h1 id="game-title">Jogo da Forca</h1>
+          <p class="subtitle">Adivinha a palavra antes que as tentativas acabem.</p>
+        </div>
+        <button class="restart-button" id="restart-button" type="button">
+          <svg aria-hidden="true" viewBox="0 0 20 20" fill="none">
+            <path d="M16.2 9a6.3 6.3 0 0 0-11.8-2L2.8 9M2.8 4.7V9h4.3M3.8 11a6.3 6.3 0 0 0 11.8 2l1.6-2M17.2 15.3V11h-4.3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Novo jogo
+        </button>
+      </div>
+
+      <div class="game-content">
+        <div class="illustration-panel">
+          <div class="illustration-topline">
+            <span class="panel-label">TENTATIVAS</span>
+            <span class="lives-count" id="lives-count"><strong>6</strong> <span>restantes</span></span>
+          </div>
+          <div class="hangman-wrap">
+            <svg class="hangman" viewBox="0 0 240 230" role="img" aria-labelledby="hangman-title">
+              <title id="hangman-title">Desenho da forca com as partes correspondentes aos erros</title>
+              <path class="gallows" d="M37 208h166M74 208V26h100v25M74 58l32-32"/>
+              <circle class="person-part" data-part="1" cx="174" cy="72" r="20"/>
+              <path class="person-part" data-part="2" d="M174 92v54"/>
+              <path class="person-part" data-part="3" d="m174 107-29 25"/>
+              <path class="person-part" data-part="4" d="m174 107 29 25"/>
+              <path class="person-part" data-part="5" d="m174 146-25 34"/>
+              <path class="person-part" data-part="6" d="m174 146 25 34"/>
+            </svg>
+          </div>
+          <div class="mistakes">
+            <span class="panel-label">LETRAS ERRADAS</span>
+            <p id="wrong-letters" class="wrong-letters" aria-live="polite">Ainda nenhuma</p>
+          </div>
+        </div>
+
+        <div class="play-panel">
+          <div class="category-row">
+            <span class="panel-label">CATEGORIA</span>
+            <span id="category" class="category-pill">—</span>
+          </div>
+
+          <div class="word-area" aria-label="Palavra a adivinhar">
+            <p class="panel-label">A TUA PALAVRA</p>
+            <div id="word" class="word" aria-live="polite"></div>
+          </div>
+
+          <p id="game-message" class="game-message" aria-live="polite">Escolhe uma letra para começar.</p>
+
+          <div class="keyboard-area">
+            <div class="keyboard-heading">
+              <span class="panel-label">TECLADO</span>
+              <span class="keyboard-hint">ou usa o teu teclado</span>
+            </div>
+            <div id="keyboard" class="keyboard" aria-label="Teclado de letras"></div>
+          </div>
+        </div>
+      </div>
+      <footer class="game-footer">
+        <span>Uma letra de cada vez. Tu consegues!</span>
+        <span class="footer-sparkle" aria-hidden="true">✳</span>
+      </footer>
+    </section>
+    <p class="page-note">FEITO PARA JOGAR COM CALMA <span aria-hidden="true">·</span> SEM PRESSA</p>
+  </main>
+</body>
+</html>

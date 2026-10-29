@@ -313,6 +313,66 @@ button {
   font-size: 8px;
 }
 
+.mode-section {
+  padding-bottom: 19px;
+  border-bottom: 1px solid var(--border);
+}
+
+.mode-selector {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.mode-button {
+  min-width: 0;
+  min-height: 58px;
+  padding: 9px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 3px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(15, 19, 29, 0.56);
+  color: #e7ebf5;
+  cursor: pointer;
+  text-align: left;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+
+.mode-button strong {
+  font-size: 12px;
+}
+
+.mode-button span {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.mode-button:hover {
+  border-color: rgba(183, 243, 107, 0.45);
+}
+
+.mode-button[aria-pressed="true"] {
+  border-color: rgba(183, 243, 107, 0.65);
+  background: rgba(183, 243, 107, 0.1);
+}
+
+.mode-button[aria-pressed="true"] strong {
+  color: var(--accent);
+}
+
+.word-pair.is-solo {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.word-card[hidden] {
+  display: none;
+}
+
 .word-section {
   padding-bottom: 22px;
   border-bottom: 1px solid var(--border);

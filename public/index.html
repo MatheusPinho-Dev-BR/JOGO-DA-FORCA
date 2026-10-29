@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#10131d">
     <meta name="description" content="Descubra duas palavras ao mesmo tempo neste jogo da forca em modo dueto.">
-    <title>Jogo da Forca — Modo Dueto</title>
+    <title>Jogo da Forca</title>
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
@@ -14,7 +14,7 @@
         <span class="brand-mark" aria-hidden="true">F</span>
         <span>Jogo da <strong>Forca</strong></span>
       </a>
-      <span class="header-label">DESAFIO EM DUPLA</span>
+      <span class="header-label">ESCOLHA SEU MODO</span>
       <button id="new-game" class="new-game-button" type="button">
         <span aria-hidden="true">↻</span>
         Novo jogo
@@ -25,9 +25,9 @@
       <section class="game-card" aria-labelledby="game-title">
         <div class="game-heading">
           <div>
-            <p class="eyebrow">DUAS PALAVRAS, UMA FORCA</p>
-            <h1 id="game-title">Modo Dueto<span>.</span></h1>
-            <p class="game-subtitle">Adivinhe as duas palavras antes de acabar suas seis vidas.</p>
+            <p class="eyebrow">ESCOLHA COMO JOGAR</p>
+            <h1 id="game-title">Jogo da Forca<span>.</span></h1>
+            <p class="game-subtitle">Jogue sozinho com uma palavra ou em dupla com duas.</p>
           </div>
           <p id="game-status" class="game-status" role="status" aria-live="polite">
             <span class="status-dot" aria-hidden="true"></span>
@@ -62,14 +62,31 @@
             <div class="life-indicators" aria-hidden="true">
               <span></span><span></span><span></span><span></span><span></span><span></span>
             </div>
-            <p class="panel-hint">Um erro só acontece quando a letra não aparece em nenhuma palavra.</p>
+            <p id="panel-hint" class="panel-hint">Um erro só acontece quando a letra não aparece em nenhuma palavra.</p>
           </aside>
 
           <div class="game-controls">
-            <section class="word-section" aria-label="Palavras para adivinhar">
+            <section class="mode-section" aria-labelledby="mode-title">
               <div class="section-heading">
-                <h2>As palavras</h2>
-                <span class="small-label">DESCUBRA AS DUAS</span>
+                <h2 id="mode-title">Modo de jogo</h2>
+                <span class="small-label">ESCOLHA UMA OPÇÃO</span>
+              </div>
+              <div id="mode-selector" class="mode-selector" role="group" aria-label="Modo de jogo">
+                <button id="solo-mode" class="mode-button" type="button" aria-pressed="false">
+                  <strong>Solo</strong>
+                  <span>Uma palavra</span>
+                </button>
+                <button id="duo-mode" class="mode-button" type="button" aria-pressed="true">
+                  <strong>Dupla</strong>
+                  <span>Duas palavras</span>
+                </button>
+              </div>
+            </section>
+
+            <section id="word-section" class="word-section" aria-label="Palavras para adivinhar">
+              <div class="section-heading">
+                <h2 id="word-section-title">As palavras</h2>
+                <span id="word-section-hint" class="small-label">DESCUBRA AS DUAS</span>
               </div>
               <div class="word-pair">
                 <article class="word-card" aria-labelledby="word-a-label">

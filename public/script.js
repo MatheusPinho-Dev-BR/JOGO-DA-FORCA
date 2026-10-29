@@ -125,18 +125,27 @@ const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const SVG_NS = "http://www.w3.org/2000/svg";
 
 const gameStatus = document.querySelector("#game-status");
+const pageTitle = document.querySelector("title");
 const statusDot = gameStatus.querySelector(".status-dot");
 const hangman = document.querySelector("#hangman");
 const hangmanDescription = document.querySelector("#hangman-description");
 const mistakesDisplay = document.querySelector("#mistakes");
 const wordADisplay = document.querySelector("#word-a-display");
 const wordBDisplay = document.querySelector("#word-b-display");
+const wordBCard = wordBDisplay.closest(".word-card");
+const wordPair = document.querySelector(".word-pair");
+const wordSection = document.querySelector("#word-section");
+const wordSectionTitle = document.querySelector("#word-section-title");
+const wordSectionHint = document.querySelector("#word-section-hint");
+const panelHint = document.querySelector("#panel-hint");
 const letterButtons = document.querySelector("#letter-buttons");
 const guessForm = document.querySelector("#guess-form");
 const letterInput = document.querySelector("#letter");
 const submitButton = guessForm.querySelector('button[type="submit"]');
 const wrongLettersDisplay = document.querySelector("#wrong-letters");
 const newGameButton = document.querySelector("#new-game");
+const soloModeButton = document.querySelector("#solo-mode");
+const duoModeButton = document.querySelector("#duo-mode");
 
 function normalizeLetter(value) {
   return value
@@ -196,10 +205,15 @@ hangman.append(scaffold, body);
 
 let wordA = "";
 let wordB = "";
+let gameMode = "duo";
 let lives = MAX_LIVES;
 let gameResult = null;
 let guessedLetters = new Set();
 let wrongLetters = [];
+
+function getActiveWords() {
+  return gameMode === "solo" ? [wordA] : [wordA, wordB];
+}
 
 function setStatus(message) {
   gameStatus.replaceChildren(statusDot, document.createTextNode(message));
@@ -263,7 +277,7 @@ function renderWrongLetters() {
 function renderLetterButtons() {
   letterButtons.replaceChildren();
   const correctLetters = new Set(
-    [...wordA, ...wordB].map((letter) => normalizeLetter(letter))
+    getActiveWords().flatMap((word) => Array.from(word, normalizeLetter))
   );
 
   Array.from(ALPHABET).forEach((letter) => {
@@ -284,8 +298,22 @@ function renderLetterButtons() {
 }
 
 function updateGame() {
+  const isSolo = gameMode === "solo";
+  pageTitle.textContent = `Jogo da Forca — ${isSolo ? "Solo" : "Dupla"}`;
   renderWord(wordADisplay, wordA, 1);
-  renderWord(wordBDisplay, wordB, 2);
+  if (!isSolo) {
+    renderWord(wordBDisplay, wordB, 2);
+  }
+  wordBCard.hidden = isSolo;
+  wordPair.classList.toggle("is-solo", isSolo);
+  wordSection.setAttribute("aria-label", isSolo ? "Palavra para adivinhar" : "Palavras para adivinhar");
+  wordSectionTitle.textContent = isSolo ? "A palavra" : "As palavras";
+  wordSectionHint.textContent = isSolo ? "DESCUBRA A PALAVRA" : "DESCUBRA AS DUAS";
+  panelHint.textContent = isSolo
+    ? "Descubra a palavra antes de acabar suas seis vidas."
+    : "Um erro só acontece quando a letra não aparece em nenhuma palavra.";
+  soloModeButton.setAttribute("aria-pressed", String(isSolo));
+  duoModeButton.setAttribute("aria-pressed", String(!isSolo));
   renderWrongLetters();
   renderHangman();
   renderLetterButtons();
@@ -295,7 +323,7 @@ function updateGame() {
 }
 
 function hasWon() {
-  return [wordA, wordB].every((word) =>
+  return getActiveWords().every((word) =>
     Array.from(word).every((letter) => guessedLetters.has(normalizeLetter(letter)))
   );
 }
@@ -304,8 +332,12 @@ function finishGame(result) {
   gameResult = result;
   setStatus(
     result === "won"
-      ? "Você venceu! Descobriu as duas palavras."
-      : `Fim de jogo. As palavras eram ${wordA.toLocaleUpperCase("pt-BR")} e ${wordB.toLocaleUpperCase("pt-BR")}.`
+      ? gameMode === "solo"
+        ? "Você venceu! Descobriu a palavra."
+        : "Você venceu! Descobriu as duas palavras."
+      : `Fim de jogo. ${gameMode === "solo" ? "A palavra era" : "As palavras eram"} ${getActiveWords()
+          .map((word) => word.toLocaleUpperCase("pt-BR"))
+          .join(" e ")}.`
   );
   updateGame();
 }
@@ -321,16 +353,24 @@ function makeGuess(value) {
   }
 
   guessedLetters.add(letter);
-  const isCorrect = [wordA, wordB].some((word) =>
+  const isCorrect = getActiveWords().some((word) =>
     Array.from(word).some((wordLetter) => normalizeLetter(wordLetter) === letter)
   );
 
   if (isCorrect) {
-    setStatus(`Boa! A letra ${letter} aparece em pelo menos uma palavra.`);
+    setStatus(
+      gameMode === "solo"
+        ? `Boa! A letra ${letter} está na palavra.`
+        : `Boa! A letra ${letter} aparece em pelo menos uma palavra.`
+    );
   } else {
     lives -= 1;
     wrongLetters.push(letter);
-    setStatus(`A letra ${letter} não aparece em nenhuma palavra. Você perdeu uma vida.`);
+    setStatus(
+      gameMode === "solo"
+        ? `A letra ${letter} não está na palavra. Você perdeu uma vida.`
+        : `A letra ${letter} não aparece em nenhuma palavra. Você perdeu uma vida.`
+    );
   }
 
   updateGame();
@@ -342,15 +382,19 @@ function makeGuess(value) {
   }
 }
 
-function startNewGame() {
+function startNewGame(mode = gameMode) {
+  gameMode = mode;
   const firstIndex = Math.floor(Math.random() * WORDS.length);
-  let secondIndex = Math.floor(Math.random() * (WORDS.length - 1));
-  if (secondIndex >= firstIndex) {
-    secondIndex += 1;
-  }
-
   wordA = WORDS[firstIndex];
-  wordB = WORDS[secondIndex];
+  if (gameMode === "duo") {
+    let secondIndex = Math.floor(Math.random() * (WORDS.length - 1));
+    if (secondIndex >= firstIndex) {
+      secondIndex += 1;
+    }
+    wordB = WORDS[secondIndex];
+  } else {
+    wordB = "";
+  }
   lives = MAX_LIVES;
   gameResult = null;
   guessedLetters = new Set();
@@ -386,5 +430,7 @@ document.addEventListener("keydown", (event) => {
 });
 
 newGameButton.addEventListener("click", startNewGame);
+soloModeButton.addEventListener("click", () => startNewGame("solo"));
+duoModeButton.addEventListener("click", () => startNewGame("duo"));
 
 startNewGame();

@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="pt-PT">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Jogo da Forca</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#" aria-label="Jogo da Forca - início">
+        <span class="brand-mark" aria-hidden="true">F</span>
+        <span>Jogo da <strong>Forca</strong></span>
+      </a>
+      <span class="header-label">DESAFIO DE PALAVRAS</span>
+      <button id="new-game" class="new-game-button" type="button">
+        <span aria-hidden="true">↻</span>
+        Novo jogo
+      </button>
+    </header>
+
+    <main class="page-shell">
+      <section class="game-card" aria-labelledby="game-title">
+        <div class="game-heading">
+          <div>
+            <p class="eyebrow">PRONTO PARA JOGAR?</p>
+            <h1 id="game-title">Adivinha a palavra<span>.</span></h1>
+            <p class="game-subtitle">Escolhe letras e tenta descobrir a palavra escondida.</p>
+          </div>
+          <p id="game-status" class="game-status" role="status" aria-live="polite">
+            <span class="status-dot" aria-hidden="true"></span>
+            Introduz uma letra para começar.
+          </p>
+        </div>
+
+        <div class="game-layout">
+          <aside class="hangman-panel" aria-label="Progresso da forca">
+            <div class="panel-topline">
+              <span>AS TUAS VIDAS</span>
+              <span class="round-label">MÁX. 6 VIDAS</span>
+            </div>
+
+            <figure aria-labelledby="hangman-caption">
+              <svg
+                id="hangman"
+                role="img"
+                aria-labelledby="hangman-title hangman-description"
+                viewBox="0 0 160 180"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <title id="hangman-title">Forca</title>
+                <desc id="hangman-description">A ilustração da forca será atualizada durante o jogo.</desc>
+              </svg>
+              <figcaption id="hangman-caption">
+                <span>Erros cometidos</span>
+                <strong><span id="mistakes">0</span><span class="mistakes-divider"> / </span>6</strong>
+              </figcaption>
+            </figure>
+
+            <div class="life-indicators" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <p class="panel-hint">Cada erro aproxima-te do fim do jogo.</p>
+          </aside>
+
+          <div class="game-controls">
+            <section class="word-section" aria-label="Palavra a adivinhar">
+              <div class="section-heading">
+                <h2>A palavra</h2>
+                <span class="small-label">PALAVRA SECRETA</span>
+              </div>
+              <p id="word-display" aria-label="Palavra a adivinhar" aria-live="polite">
+                A palavra aparecerá aqui.
+              </p>
+            </section>
+
+            <form id="guess-form" class="guess-form">
+              <label for="letter">Experimenta uma letra</label>
+              <div class="input-row">
+                <input
+                  id="letter"
+                  name="letter"
+                  type="text"
+                  maxlength="1"
+                  pattern="[A-Za-zÀ-ÿ]"
+                  autocomplete="off"
+                  autocapitalize="characters"
+                  aria-describedby="letter-hint"
+                  placeholder="?"
+                  required
+                >
+                <button type="submit">Tentar letra <span aria-hidden="true">→</span></button>
+              </div>
+              <p id="letter-hint">Também podes usar o teclado do teu dispositivo.</p>
+            </form>
+
+            <section class="alphabet-section" aria-labelledby="letter-buttons-title">
+              <div class="section-heading">
+                <h2 id="letter-buttons-title">Escolhe uma letra</h2>
+                <span class="small-label">ALFABETO</span>
+              </div>
+              <div id="letter-buttons" role="group" aria-label="Letras disponíveis"></div>
+            </section>
+
+            <section class="wrong-letters-section" aria-labelledby="guessed-letters-title">
+              <h2 id="guessed-letters-title">Letras erradas</h2>
+              <p id="wrong-letters">Ainda não há letras erradas.</p>
+            </section>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>

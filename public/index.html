@@ -1,18 +1,20 @@
 <!doctype html>
-<html lang="pt-PT">
+<html lang="pt-BR">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Jogo da Forca</title>
+    <meta name="theme-color" content="#10131d">
+    <meta name="description" content="Descubra duas palavras ao mesmo tempo neste jogo da forca em modo dueto.">
+    <title>Jogo da Forca — Modo Dueto</title>
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <header class="site-header">
-      <a class="brand" href="#" aria-label="Jogo da Forca - início">
+      <a class="brand" href="#" aria-label="Jogo da Forca — início">
         <span class="brand-mark" aria-hidden="true">F</span>
         <span>Jogo da <strong>Forca</strong></span>
       </a>
-      <span class="header-label">DESAFIO DE PALAVRAS</span>
+      <span class="header-label">DESAFIO EM DUPLA</span>
       <button id="new-game" class="new-game-button" type="button">
         <span aria-hidden="true">↻</span>
         Novo jogo
@@ -23,21 +25,21 @@
       <section class="game-card" aria-labelledby="game-title">
         <div class="game-heading">
           <div>
-            <p class="eyebrow">PRONTO PARA JOGAR?</p>
-            <h1 id="game-title">Adivinha a palavra<span>.</span></h1>
-            <p class="game-subtitle">Escolhe letras e tenta descobrir a palavra escondida.</p>
+            <p class="eyebrow">DUAS PALAVRAS, UMA FORCA</p>
+            <h1 id="game-title">Modo Dueto<span>.</span></h1>
+            <p class="game-subtitle">Adivinhe as duas palavras antes de acabar suas seis vidas.</p>
           </div>
           <p id="game-status" class="game-status" role="status" aria-live="polite">
             <span class="status-dot" aria-hidden="true"></span>
-            Introduz uma letra para começar.
+            Escolha uma letra para começar.
           </p>
         </div>
 
         <div class="game-layout">
           <aside class="hangman-panel" aria-label="Progresso da forca">
             <div class="panel-topline">
-              <span>AS TUAS VIDAS</span>
-              <span class="round-label">MÁX. 6 VIDAS</span>
+              <span>SUAS VIDAS</span>
+              <span class="round-label">MÁX. 6 ERROS</span>
             </div>
 
             <figure aria-labelledby="hangman-caption">
@@ -49,7 +51,7 @@
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <title id="hangman-title">Forca</title>
-                <desc id="hangman-description">A ilustração da forca será atualizada durante o jogo.</desc>
+                <desc id="hangman-description">Nenhuma parte do boneco foi desenhada.</desc>
               </svg>
               <figcaption id="hangman-caption">
                 <span>Erros cometidos</span>
@@ -60,29 +62,35 @@
             <div class="life-indicators" aria-hidden="true">
               <span></span><span></span><span></span><span></span><span></span><span></span>
             </div>
-            <p class="panel-hint">Cada erro aproxima-te do fim do jogo.</p>
+            <p class="panel-hint">Um erro só acontece quando a letra não aparece em nenhuma palavra.</p>
           </aside>
 
           <div class="game-controls">
-            <section class="word-section" aria-label="Palavra a adivinhar">
+            <section class="word-section" aria-label="Palavras para adivinhar">
               <div class="section-heading">
-                <h2>A palavra</h2>
-                <span class="small-label">PALAVRA SECRETA</span>
+                <h2>As palavras</h2>
+                <span class="small-label">DESCUBRA AS DUAS</span>
               </div>
-              <p id="word-display" aria-label="Palavra a adivinhar" aria-live="polite">
-                A palavra aparecerá aqui.
-              </p>
+              <div class="word-pair">
+                <article class="word-card" aria-labelledby="word-a-label">
+                  <h3 id="word-a-label">Palavra 1</h3>
+                  <p id="word-a-display" class="word-display" aria-live="polite"></p>
+                </article>
+                <article class="word-card" aria-labelledby="word-b-label">
+                  <h3 id="word-b-label">Palavra 2</h3>
+                  <p id="word-b-display" class="word-display" aria-live="polite"></p>
+                </article>
+              </div>
             </section>
 
             <form id="guess-form" class="guess-form">
-              <label for="letter">Experimenta uma letra</label>
+              <label for="letter">Digite uma letra</label>
               <div class="input-row">
                 <input
                   id="letter"
                   name="letter"
                   type="text"
                   maxlength="1"
-                  pattern="[A-Za-zÀ-ÿ]"
                   autocomplete="off"
                   autocapitalize="characters"
                   aria-describedby="letter-hint"
@@ -91,20 +99,20 @@
                 >
                 <button type="submit">Tentar letra <span aria-hidden="true">→</span></button>
               </div>
-              <p id="letter-hint">Também podes usar o teclado do teu dispositivo.</p>
+              <p id="letter-hint">Você também pode usar o teclado do dispositivo.</p>
             </form>
 
             <section class="alphabet-section" aria-labelledby="letter-buttons-title">
               <div class="section-heading">
-                <h2 id="letter-buttons-title">Escolhe uma letra</h2>
-                <span class="small-label">ALFABETO</span>
+                <h2 id="letter-buttons-title">Escolha uma letra</h2>
+                <span class="small-label">TECLADO</span>
               </div>
               <div id="letter-buttons" role="group" aria-label="Letras disponíveis"></div>
             </section>
 
             <section class="wrong-letters-section" aria-labelledby="guessed-letters-title">
               <h2 id="guessed-letters-title">Letras erradas</h2>
-              <p id="wrong-letters">Ainda não há letras erradas.</p>
+              <p id="wrong-letters" aria-live="polite">Ainda não há letras erradas.</p>
             </section>
           </div>
         </div>

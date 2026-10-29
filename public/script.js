@@ -1,30 +1,175 @@
 "use strict";
 
-const WORDS = [
-  "forca",
-  "javascript",
-  "navegador",
-  "acessibilidade",
-  "programa",
-  "computador",
-  "teclado",
-  "desenvolvimento"
-];
+const BASE_WORDS = `
+casa apartamento cozinha quarto sala banheiro varanda corredor janela porta
+parede telhado teto piso escada garagem jardim quintal portão mesa cadeira
+sofá poltrona banco cama colchão travesseiro cobertor lençol armário gaveta
+estante prateleira espelho quadro cortina tapete luminária lâmpada fogão forno
+geladeira freezer liquidificador batedeira torradeira chaleira cafeteira panela frigideira
+prato tigela copo xícara garfo faca colher concha toalha sabonete shampoo
+escova pente balde vassoura rodo esponja detergente sabão varal pregador
+ferro cabide cesto lixeira caixa envelope pacote chave fechadura campainha
+relógio calendário telefone controle tomada interruptor extensão almofada vaso planta
+flor vela fósforo ferramenta martelo parafuso arroz feijão macarrão farinha
+pão bolo biscoito torrada tapioca milho trigo aveia cevada lentilha ervilha
+soja quinoa cuscuz carne frango peixe porco carneiro peru linguiça presunto
+bacon ovo queijo leite manteiga iogurte creme requeijão coalhada ricota muçarela
+maçã banana laranja limão mamão manga abacaxi melancia morango uva pera
+pêssego ameixa cereja figo goiaba jabuticaba caju kiwi coco acerola tomate
+batata cenoura cebola alho abóbora pepino alface couve espinafre brócolis beterraba
+mandioca inhame berinjela pimentão chuchu rabanete agrião repolho açúcar pimenta
+canela cravo noz gengibre baunilha orégano cominho açafrão água suco café
+chá refrigerante cerveja vinho sopa caldo salada sorvete pudim cachorro gato
+cavalo vaca touro bezerro cabra bode ovelha coelho hamster rato camundongo
+esquilo castor lontra raposa lobo urso panda leão tigre onça leopardo
+guepardo elefante girafa zebra rinoceronte hipopótamo macaco gorila chimpanzé orangotango
+veado cervo alce rena camelo dromedário lhama alpaca búfalo bisão canguru
+coala wombat ornitorrinco tatu tamanduá preguiça gambá doninha furão texugo
+águia falcão coruja papagaio arara tucano canário pardal pombo gaivota pinguim
+avestruz ema cisne flamingo pelicano cegonha corvo rouxinol cobra lagarto iguana
+camaleão jacaré crocodilo tartaruga jabuti lagartixa salamandra sapo rã perereca tritão
+besouro formiga abelha vespa mosquito borboleta mariposa joaninha gafanhoto baleia
+golfinho tubarão polvo lula camarão caranguejo lagosta ostra mexilhão estrela peixe
+coração cabeça rosto cabelo olho orelha nariz boca dente língua pescoço
+ombro braço cotovelo mão dedo unha peito costas barriga cintura quadril
+perna joelho tornozelo pé calcanhar pele osso músculo sangue cérebro estômago
+fígado pulmão rim garganta testa bochecha queixo cílio sobrancelha pulso veia
+familia pessoa crianca adulto jovem idoso amigo amiga colega vizinho vizinha
+pai mãe filho filha irmão irmã primo prima tio tia avó avô
+neto neta marido esposa casal professor professora aluno aluna estudante médico médica
+dentista enfermeiro enfermeira artista músico música pintor pintora escritor escritora poeta
+ator atriz cantor cantora cozinheiro cozinheira padeiro padeira advogado advogada engenheiro engenheira
+arquiteto arquiteta motorista piloto maquinista agricultor agricultora jardineiro jardineira pedreiro bombeiro
+policial jornalista cientista pesquisador pesquisadora vendedor vendedora gerente secretário secretária veterinário
+escola colégio universidade sala aula caderno livro revista jornal papel caneta
+lápis borracha apontador mochila estojo carteira quadro giz mapa globo prova
+teclado computador monitor tela mouse impressora câmera celular tablet internet programa
+arquivo pasta senha código mensagem navegador aplicativo sistema rede servidor página site
+cidade bairro rua avenida estrada rodovia ponte praça parque mercado loja farmácia
+hospital clínica banco correio museu teatro cinema biblioteca restaurante padaria açougue
+hotel fazenda sítio praia montanha floresta ilha campo deserto oceano rio
+lago cachoeira riacho vale caverna vulcão planeta estrela cometa nuvem chuva
+vento tempestade trovão raio neblina neve gelo fogo terra areia pedra
+rocha árvore tronco folha raiz galho semente fruto bosque mata grama
+capim bambu palmeira pinheiro carvalho cedro coqueiro floração paisagismo primavera verão
+outono inverno manhã tarde noite madrugada semana mês ano dia hora minuto
+segundo instante momento passado futuro presente inicio pausa final caminho destino viagem
+carro bicicleta motocicleta ônibus caminhão trem metrô avião barco navio canoa
+submarino patinete skate roda pneu motor volante banco farol buzina freio
+capacete uniforme camisa camiseta calça bermuda vestido saia casaco jaqueta blusa
+suéter meia sapato tênis bota sandália chinelo chapéu boné cachecol luva
+bolsa mochila carteira cinto pulseira colar anel brinco óculos relógio tecido
+algodão couro seda lã renda botão zíper bolso gola manga punho
+musica canção ritmo melodia acorde instrumento violão guitarra piano bateria tambor
+flauta trompete saxofone violino viola harpa coral banda concerto show palco
+teatro pintura desenho escultura fotografia filme novela documentario romance poema historia
+arte cultura festa aniversario casamento feriado carnaval natal pascoa presente surpresa
+esporte futebol basquete vôlei tênis natação corrida ciclismo ginástica luta boxe
+gol ponto equipe time jogador partida campeonato torcida bola raquete rede
+campo quadra pista piscina medalha troféu treino jogo regra vitória derrota
+número conta soma cálculo medida peso altura distância temperatura velocidade energia força
+cor vermelho azul amarelo verde roxo laranja branco preto cinza marrom
+rosa violeta dourado prateado claro escuro brilho sombra luz som silencio
+alegria tristeza coragem medo calma pressa carinho respeito amizade saudade surpresa
+ideia sonho plano projeto trabalho tarefa esforço escolha pergunta resposta dúvida
+verdade mentira razão motivo exemplo detalhe problema solução segredo cuidado ajuda
+abertura conversa palavra letra frase texto leitura escrita idioma língua nome
+forma tipo jeito modo parte lado centro canto ponta linha ponto marca
+material metal madeira vidro plástico papel pedra barro ouro prata cobre ferro
+aço chumbo lata fio cabo corda corrente cadeado tecido espuma borracha mola
+pilha bateria energia tomada plugue controle botao painel ferramenta chave alicate
+serrote tesoura agulha linha fita cola tinta pincel rolo escada capacete
+fruta legume verdura tempero ingrediente receita cozinha refeição café lanche almoço jantar
+fome sede sabor cheiro gosto doce salgado azedo amargo picante fresco quente
+frio calor secura umidade clima ambiente natureza animal pessoa objeto lugar
+calor energia luz eletricidade gas combustivel gasolina diesel oleo gasolina bateria
+navio porto aeroporto estação terminal plataforma passagem bilhete bagagem mala viagem
+continente país estado capital fronteira mapa região planeta mundo universo galáxia
+português espanhol inglês francês italiano alemão japonês árabe idioma palavra frase
+pergunta resposta conversa diálogo notícia artigo reportagem entrevista anúncio cartaz aviso
+lei direito dever liberdade justiça paz guerra governo cidade sociedade
+economia dinheiro moeda nota preço valor custo compra venda troca lucro
+empresa fabrica oficina escritorio loja comercio negocio servico produto cliente fornecedor
+papelaria livraria mercado supermercado feira banca quiosque shopping vitrine prateleira
+medicina saúde cuidado vacina remédio receita consulta exame sintoma febre tosse gripe
+dor ferida curativo hospital paciente tratamento repouso dieta exercício higiene banho
+computador notebook laptop monitor teclado mouse cabo carregador bateria tela aplicativo
+fotografia imagem retrato paisagem desenho pintura cor pincel tela moldura galeria
+escritorio agenda bloco planilha documento contrato formulario assinatura carimbo pasta arquivo
+beleza sorriso gesto olhar voz fala passo movimento postura sinal simbolo
+caráter pessoa talento aptidao habilidade pratica experiencia memoria atencao foco raciocinio
+`
+  .trim()
+  .split(/\s+/u);
+
+const REGULAR_AR_VERBS = `
+amar andar acordar admirar adorar ajudar alegrar apagar apontar apertar arrumar
+assinar assustar atacar atrapalhar avisar baixar bailar banhar batalhar beijar brilhar
+buscar calcular caminhar cantar capacitar cuidar chamar chegar chutar circular colaborar
+comemorar comparar completar comprar concentrar confirmar conquistar conversar cozinhar contar
+continuar copiar cortar costurar cuidar danar decorar descansar desejar desenhar despertar
+destacar estudar escutar esperar explicar explorar fabricar faltar festejar ficar filmar
+finalizar formar fotografar ganhar gastar gostar guardar imaginar importar instalar jantar
+jogar juntar lavar levantar ligar limpar lucrar machucar mandar marcar melhorar
+misturar morar mudar nadar notar observar ocupar ofertar olhar operar organizar
+orientar pagar parar participar pesquisar pintar planejar plantar praticar preparar sambar
+procurar programar provar publicar puxar questionar realizar respirar retornar revelar revisar
+rezar rodar salvar secar separar soltar sonhar superar telefonar terminar tocar
+tomar trabalhar trocar usar variar viajar visitar votar zelar
+`
+  .trim()
+  .split(/\s+/u);
+
 const MAX_LIVES = 6;
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const SVG_NS = "http://www.w3.org/2000/svg";
 
 const gameStatus = document.querySelector("#game-status");
+const statusDot = gameStatus.querySelector(".status-dot");
 const hangman = document.querySelector("#hangman");
 const hangmanDescription = document.querySelector("#hangman-description");
 const mistakesDisplay = document.querySelector("#mistakes");
-const wordDisplay = document.querySelector("#word-display");
+const wordADisplay = document.querySelector("#word-a-display");
+const wordBDisplay = document.querySelector("#word-b-display");
 const letterButtons = document.querySelector("#letter-buttons");
 const guessForm = document.querySelector("#guess-form");
 const letterInput = document.querySelector("#letter");
 const submitButton = guessForm.querySelector('button[type="submit"]');
 const wrongLettersDisplay = document.querySelector("#wrong-letters");
 const newGameButton = document.querySelector("#new-game");
+
+function normalizeLetter(value) {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/gu, "")
+    .toLocaleUpperCase("pt-BR");
+}
+
+function conjugateRegularArVerb(infinitive) {
+  const stem = infinitive.slice(0, -2);
+  return [
+    infinitive,
+    `${stem}o`,
+    `${stem}as`,
+    `${stem}a`,
+    `${stem}amos`,
+    `${stem}ais`,
+    `${stem}am`
+  ];
+}
+
+const wordCandidates = [
+  ...BASE_WORDS,
+  ...REGULAR_AR_VERBS.flatMap(conjugateRegularArVerb)
+];
+const uniqueWords = new Map(
+  wordCandidates.map((word) => [normalizeLetter(word), word])
+);
+const WORDS = Array.from(uniqueWords.values()).slice(0, 1000);
+
+if (WORDS.length !== 1000) {
+  throw new Error(`O dicionário precisa conter 1.000 palavras; contém ${WORDS.length}.`);
+}
 
 const scaffold = document.createElementNS(SVG_NS, "g");
 scaffold.setAttribute("stroke", "currentColor");
@@ -49,17 +194,15 @@ body.setAttribute("stroke-width", "4");
 body.setAttribute("stroke-linecap", "round");
 hangman.append(scaffold, body);
 
-let secretWord = "";
+let wordA = "";
+let wordB = "";
 let lives = MAX_LIVES;
-let gameOver = false;
+let gameResult = null;
 let guessedLetters = new Set();
 let wrongLetters = [];
 
-function normalizeLetter(value) {
-  return value
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLocaleUpperCase("pt-PT");
+function setStatus(message) {
+  gameStatus.replaceChildren(statusDot, document.createTextNode(message));
 }
 
 function createSvgShape(tagName, attributes) {
@@ -79,28 +222,36 @@ function renderHangman() {
     ["line", { x1: "110", y1: "105", x2: "92", y2: "135" }],
     ["line", { x1: "110", y1: "105", x2: "128", y2: "135" }]
   ];
+  const mistakes = MAX_LIVES - lives;
 
-  parts.slice(0, MAX_LIVES - lives).forEach(([tagName, attributes]) => {
+  parts.slice(0, mistakes).forEach(([tagName, attributes]) => {
     body.append(createSvgShape(tagName, attributes));
   });
 
-  mistakesDisplay.textContent = String(MAX_LIVES - lives);
-  hangmanDescription.textContent =
-    `${MAX_LIVES - lives} de ${MAX_LIVES} partes do boneco desenhadas.`;
+  mistakesDisplay.textContent = String(mistakes);
+  hangmanDescription.textContent = `${mistakes} de ${MAX_LIVES} partes do boneco desenhadas.`;
   document.querySelectorAll(".life-indicators span").forEach((indicator, index) => {
     indicator.classList.toggle("is-lost", index >= lives);
   });
 }
 
-function renderWord() {
-  const visibleLetters = Array.from(secretWord, (letter) =>
-    guessedLetters.has(normalizeLetter(letter)) ? letter.toLocaleUpperCase("pt-PT") : "_"
-  );
-  wordDisplay.textContent = visibleLetters.join(" ");
-  wordDisplay.setAttribute(
-    "aria-label",
-    `Palavra: ${visibleLetters.map((letter) => letter === "_" ? "lacuna" : letter).join(", ")}`
-  );
+function renderWord(display, word, number) {
+  const fragment = document.createDocumentFragment();
+  const spokenLetters = [];
+
+  Array.from(word).forEach((letter) => {
+    const isRevealed =
+      guessedLetters.has(normalizeLetter(letter)) || gameResult === "lost";
+    const tile = document.createElement("span");
+    tile.className = "letter-slot";
+    tile.textContent = isRevealed ? letter.toLocaleUpperCase("pt-BR") : "";
+    tile.setAttribute("aria-hidden", "true");
+    fragment.append(tile);
+    spokenLetters.push(isRevealed ? letter : "lacuna");
+  });
+
+  display.replaceChildren(fragment);
+  display.setAttribute("aria-label", `Palavra ${number}: ${spokenLetters.join(", ")}`);
 }
 
 function renderWrongLetters() {
@@ -111,83 +262,101 @@ function renderWrongLetters() {
 
 function renderLetterButtons() {
   letterButtons.replaceChildren();
+  const correctLetters = new Set(
+    [...wordA, ...wordB].map((letter) => normalizeLetter(letter))
+  );
 
   Array.from(ALPHABET).forEach((letter) => {
     const button = document.createElement("button");
+    const wasGuessed = guessedLetters.has(letter);
     button.type = "button";
     button.textContent = letter;
     button.setAttribute("aria-label", `Tentar a letra ${letter}`);
-    button.disabled = gameOver || guessedLetters.has(letter);
+    button.disabled = Boolean(gameResult) || wasGuessed;
+
+    if (wasGuessed) {
+      button.classList.add(correctLetters.has(letter) ? "is-correct" : "is-wrong");
+    }
+
     button.addEventListener("click", () => makeGuess(letter));
     letterButtons.append(button);
   });
 }
 
 function updateGame() {
-  renderWord();
+  renderWord(wordADisplay, wordA, 1);
+  renderWord(wordBDisplay, wordB, 2);
   renderWrongLetters();
   renderHangman();
   renderLetterButtons();
 
-  letterInput.disabled = gameOver;
-  submitButton.disabled = gameOver;
+  letterInput.disabled = Boolean(gameResult);
+  submitButton.disabled = Boolean(gameResult);
 }
 
-function finishGame(won) {
-  gameOver = true;
-  gameStatus.textContent = won
-    ? `Vitória! A palavra era "${secretWord.toLocaleUpperCase("pt-PT")}".`
-    : `Fim do jogo. A palavra era "${secretWord.toLocaleUpperCase("pt-PT")}".`;
+function hasWon() {
+  return [wordA, wordB].every((word) =>
+    Array.from(word).every((letter) => guessedLetters.has(normalizeLetter(letter)))
+  );
+}
+
+function finishGame(result) {
+  gameResult = result;
+  setStatus(
+    result === "won"
+      ? "Você venceu! Descobriu as duas palavras."
+      : `Fim de jogo. As palavras eram ${wordA.toLocaleUpperCase("pt-BR")} e ${wordB.toLocaleUpperCase("pt-BR")}.`
+  );
   updateGame();
 }
 
 function makeGuess(value) {
   const letter = normalizeLetter(value.trim());
-  if (!/^[A-Z]$/.test(letter)) {
-    gameStatus.textContent = "Introduz uma letra válida.";
+  if (!/^[A-Z]$/u.test(letter)) {
+    setStatus("Digite uma letra válida.");
     return;
   }
-  if (gameOver || guessedLetters.has(letter)) {
+  if (gameResult || guessedLetters.has(letter)) {
     return;
   }
 
   guessedLetters.add(letter);
-  const isCorrect = Array.from(secretWord).some(
-    (secretLetter) => normalizeLetter(secretLetter) === letter
+  const isCorrect = [wordA, wordB].some((word) =>
+    Array.from(word).some((wordLetter) => normalizeLetter(wordLetter) === letter)
   );
 
   if (isCorrect) {
-    gameStatus.textContent = `Boa! A letra ${letter} existe na palavra.`;
+    setStatus(`Boa! A letra ${letter} aparece em pelo menos uma palavra.`);
   } else {
     lives -= 1;
     wrongLetters.push(letter);
-    gameStatus.textContent = `A letra ${letter} não está na palavra. Perdes uma vida.`;
+    setStatus(`A letra ${letter} não aparece em nenhuma palavra. Você perdeu uma vida.`);
   }
 
   updateGame();
 
-  const hasWon = Array.from(secretWord).every(
-    (secretLetter) => guessedLetters.has(normalizeLetter(secretLetter))
-  );
-
-  if (hasWon) {
-    finishGame(true);
+  if (hasWon()) {
+    finishGame("won");
   } else if (lives === 0) {
-    finishGame(false);
+    finishGame("lost");
   }
 }
 
 function startNewGame() {
-  const availableWords = WORDS.length > 1
-    ? WORDS.filter((word) => word !== secretWord)
-    : WORDS;
-  secretWord = availableWords[Math.floor(Math.random() * availableWords.length)];
+  const firstIndex = Math.floor(Math.random() * WORDS.length);
+  let secondIndex = Math.floor(Math.random() * (WORDS.length - 1));
+  if (secondIndex >= firstIndex) {
+    secondIndex += 1;
+  }
+
+  wordA = WORDS[firstIndex];
+  wordB = WORDS[secondIndex];
   lives = MAX_LIVES;
-  gameOver = false;
+  gameResult = null;
   guessedLetters = new Set();
   wrongLetters = [];
   letterInput.value = "";
-  gameStatus.textContent = "Introduz uma letra para começar.";
+  setStatus("Escolha uma letra para começar.");
   updateGame();
 }
 
@@ -200,6 +369,7 @@ guessForm.addEventListener("submit", (event) => {
 document.addEventListener("keydown", (event) => {
   const target = event.target;
   if (
+    event.repeat ||
     event.ctrlKey ||
     event.altKey ||
     event.metaKey ||
